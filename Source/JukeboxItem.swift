@@ -25,6 +25,8 @@ import Foundation
 import AVFoundation
 import MediaPlayer
 
+let JukeBoxNotificationError = "jukeBoxNotificationError"
+
 protocol JukeboxItemDelegate : class {
     func jukeboxItemDidLoadPlayerItem(item: JukeboxItem)
     func jukeboxItemDidUpdate(item: JukeboxItem)
@@ -144,6 +146,7 @@ public class JukeboxItem: NSObject {
                 message += "It looks like you're using Xcode 7 and due to an App Transport Security issue (absence of SSL-based HTTP) the asset cannot be loaded from the specified URL: \"\(URL)\".\nTo fix this issue, append the following to your .plist file:\n\n<key>NSAppTransportSecurity</key>\n<dict>\n\t<key>NSAllowsArbitraryLoads</key>\n\t<true/>\n</dict>\n\n"
                 fatalError(message)
             }
+            NSNotificationCenter.defaultCenter().postNotificationName(JukeBoxNotificationError, object: nil)
             return false
         }
         return true
