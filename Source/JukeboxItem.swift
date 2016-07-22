@@ -25,7 +25,7 @@ import Foundation
 import AVFoundation
 import MediaPlayer
 
-let JukeBoxNotificationError = "jukeBoxNotificationError"
+public let JukeBoxNotificationError = "JukeBoxNotificationError"
 
 protocol JukeboxItemDelegate : class {
     func jukeboxItemDidLoadPlayerItem(item: JukeboxItem)
