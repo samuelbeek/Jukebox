@@ -34,6 +34,7 @@ public let JukeBoxKeyErrorCode = "JukeBoxKeyErrorCode"
 protocol JukeboxItemDelegate : class {
     func jukeboxItemDidLoadPlayerItem(item: JukeboxItem)
     func jukeboxItemDidUpdate(item: JukeboxItem)
+    func jukeboxItemDidFail(item: JukeboxItem)
 }
 
 public class JukeboxItem: NSObject {
@@ -81,6 +82,11 @@ public class JukeboxItem: NSObject {
     }
     
     override public func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        
+        if change?["new"] is NSNull {
+            delegate?.jukeboxItemDidFail(self)
+            return
+        }
         
         if keyPath == observedValue {
             if let item = playerItem where item === object {

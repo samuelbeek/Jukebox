@@ -35,11 +35,10 @@ class ViewController: UIViewController, JukeboxDelegate {
         
         // configure jukebox
         jukebox = Jukebox(delegate: self, items: [
-            JukeboxItem(URL: NSURL(string: "http://soundradio.hk/sound-radio.m3u")!),
             JukeboxItem(URL: NSURL(string: "http://www.kissfm.ro/listen.pls")!),
             JukeboxItem(URL: NSURL(string: "http://www.noiseaddicts.com/samples_1w72b820/2514.mp3")!),
             JukeboxItem(URL: NSURL(string: "http://www.noiseaddicts.com/samples_1w72b820/2958.mp3")!)
-            ])
+            ])!
         
         /// Later add another item
         let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(3 * Double(NSEC_PER_SEC)))
@@ -105,7 +104,14 @@ class ViewController: UIViewController, JukeboxDelegate {
             playPauseButton.setImage(UIImage(named: "pauseBtn"), forState: .Normal)
         } else {
             volumeSlider.value = jukebox.volume
-            playPauseButton.setImage(UIImage(named: jukebox.state == .Paused ? "playBtn" : "pauseBtn"), forState: .Normal)
+            let imageName: String
+            switch jukebox.state {
+            case .Playing, .Loading:
+                imageName = "pauseBtn"
+            case .Paused, .Failed, .Ready:
+                imageName = "playBtn"
+            }
+            playPauseButton.setImage(UIImage(named: imageName), forState: .Normal)
         }
         
         print("Jukebox state changed to \(jukebox.state)")
